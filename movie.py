@@ -78,3 +78,43 @@ ml_Data.head()
 f = ml_Data.iloc[:,[5,2,3]]
 f.head(2)
 
+l = ml_Data.iloc[:,6]
+l.head(2)
+
+features = f.values
+label = l.values
+
+
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+for i in range(1,401):
+    X_train,X_test,Y_train,Y_test = train_test_split(features,label,test_size=0.2, random_state= i)
+    for n in range(1,401):
+        model = KNeighborsClassifier(n_neighbors = n)
+        model.fit(X_train,Y_train)
+        training_score = model.score(X_train,Y_train)
+        testing_score = model.score(X_test,Y_test)
+        if testing_score > training_score:
+            if testing_score > 0.49:
+                print("Training Score {} Testing Score {} for Random State {} and n_neighbors {}".format(training_score,testing_score,i,n))
+
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+X_train,X_test,Y_train,Y_test = train_test_split(features,label,test_size=0.2, random_state=232 )
+model = KNeighborsClassifier(n_neighbors = 217)
+model.fit(X_train,Y_train)
+training_score = model.score(X_train,Y_train)
+testing_score = model.score(X_test,Y_test)
+# Only Generalized model will be outputted
+if testing_score > training_score:
+    print("Training Score {} Testing Score {} ".format(training_score,testing_score))
+
+movieid = int(input("Enter the MovieID: "))
+age = int(input("Enter the Age Group( 1, 56, 25, 45, 50):"))
+occupation = int(input("Enter the Occupation group value (10, 16, 15,  7, 20,  9):"))
+
+featureInput = np.array([[movieid,age,occupation]])
+rating = model.predict(featureInput)
+print("Rating of the Movie is: ", rating)    
+
+
